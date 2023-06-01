@@ -2,9 +2,50 @@
 
 std::istream& operator >>(std::istream& in, TCompl& c)
 {
-	char isign, operation;
+	char isign;
+	char test[20];
+	char operation = '\n';
+
+	//Really not so nice code but deadline is near
+
+	if (std::cin.peek() == '-')
+	{
+		std::cin >> operation;
+		if (std::cin.peek() == 'i')
+		{
+			std::cin >> isign;
+			c.Re = 0;
+			c.Im = -1;
+			std::cin.ignore();
+			return in;
+		}
+	}
+	else if (std::cin.peek() == 'i')
+	{
+		std::cin >> isign;
+		c.Re = 0;
+		c.Im = 1;
+		std::cin.ignore();
+		return in;
+	}
+
+
 
 	in >> c.Re;
+	if (operation == '-')
+	{
+		c.Re = c.Re * (-1);
+	}
+	
+	if (std::cin.peek() == 'i')
+	{
+		std::cin >> isign;
+		c.Im = c.Re;
+		c.Re = 0;
+		std::cin.ignore();
+		return in;
+	}
+
 	std::cin >> std::noskipws;
 
 	if (std::cin.peek() == ' ')

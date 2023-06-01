@@ -98,6 +98,7 @@ int main()
 			break;
 
 		case 13:
+			std::cin.ignore();
 			interface_input(a, b);
 			break;
 
@@ -139,6 +140,7 @@ void interface_input(TCompl& x, double& y)
 	std::cin >> x;
 	std::cout << "Input b: ";
 	std::cin >> y;
+	std::cin.ignore();
 }
 
 void interface_options()
