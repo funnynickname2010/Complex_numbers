@@ -1,4 +1,4 @@
-#include "TCompl.h"
+#include "TComplex.h"
 #include <string>
 #include <cmath>
 
@@ -8,7 +8,7 @@ void interface_options();
 
 int main()
 {
-	
+
 	TCompl a, b;
 	int operation_id;
 	TCompl res;
@@ -93,7 +93,7 @@ int main()
 				std::cin >> b_int;
 				b = b_int; //Changing "original" b complex number to 0 + 0i
 			}
-			
+
 			res = a ^ b_int;
 			break;
 
@@ -114,11 +114,11 @@ int main()
 			std::cout << "b: " << b << '\n';
 			std::cout << "returned value: " << res << std::endl << std::endl;
 		}
-		
-	}	while (operation_id != 14);
 
-	
-	
+	} while (operation_id != 14);
+
+
+
 	return 0;
 }
 
@@ -145,6 +145,7 @@ void interface_input(TCompl& x, double& y)
 
 void interface_options()
 {
+	std::cin.ignore();
 	std::cout << "\nWhich operation do you want to test?\n";
 	std::cout << "1. +\n";
 	std::cout << "2. -\n";
