@@ -1,89 +1,71 @@
 #include "TCompl.h"
 
-std::istream& operator >>(std::istream& in, TCompl& c)
+std::istream& operator>>(std::istream& in, TCompl& c)
 {
-	char isign;
-	char test[20];
 	char operation = '\n';
+	std::string input;
 
-	//Really not so nice code but deadline is near
+	// Read the input into a string buffer, handling spaces or newlines
+	std::getline(in >> std::ws, input);
 
-	if (std::cin.peek() == '-')
+	std::istringstream iss(input);
+
+	if (iss.peek() == '-')
 	{
-		std::cin >> operation;
-		if (std::cin.peek() == 'i')
+		iss >> operation;
+		if (iss.peek() == 'i')
 		{
-			std::cin >> isign;
+			iss.ignore();
 			c.Re = 0;
 			c.Im = -1;
-			std::cin.ignore();
 			return in;
 		}
 	}
-	else if (std::cin.peek() == 'i')
+	else if (iss.peek() == 'i')
 	{
-		std::cin >> isign;
+		iss.ignore();
 		c.Re = 0;
 		c.Im = 1;
-		std::cin.ignore();
 		return in;
 	}
 
-
-
-	in >> c.Re;
+	iss >> c.Re;
 	if (operation == '-')
 	{
-		c.Re = c.Re * (-1);
+		c.Re = -c.Re;
 	}
-	
-	if (std::cin.peek() == 'i')
+
+	if (iss.peek() == 'i')
 	{
-		std::cin >> isign;
+		iss.ignore();
 		c.Im = c.Re;
 		c.Re = 0;
-		std::cin.ignore();
 		return in;
 	}
 
-	std::cin >> std::noskipws;
+	iss >> std::ws; // Skip leading whitespace
 
-	if (std::cin.peek() == ' ')
+	if (iss.peek() == '+' || iss.peek() == '-')
 	{
-		std::cin.ignore();
-	}
-
-	std::cin >> std::skipws;
-
-	if (!(std::cin.peek() == '\n'))
-	{
-		in >> operation;
-		std::cin.ignore();
-
-		if (std::cin.peek() == 'i' && operation == '-')
+		iss >> operation;
+		if (iss.peek() == 'i')
 		{
-			c.Im = (-1);
-			std::cin.ignore();
+			iss.ignore();
+			c.Im = (operation == '-') ? -1 : 1;
 		}
-		else if (std::cin.peek() == 'i' && operation == '+')
+		else
 		{
-			c.Im = 1;
-			std::cin.ignore();
-		}
-		else if (operation == '-')
-		{
-			std::cin >> c.Im >> isign;
-			c.Im = c.Im * (-1);
-		}
-		else if (operation == '+')
-		{
-			std::cin >> c.Im >> isign;
+			iss.putback(operation);
+			iss >> c.Im;
 		}
 	}
 	else
 	{
 		c.Im = 0;
 	}
+
+	// Clear any error flags that may have been set on the stream
+	in.clear();
 
 	return in;
 }
