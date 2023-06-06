@@ -48,6 +48,7 @@ std::istream& operator>>(std::istream& in, TCompl& c)
 	if (iss.peek() == '+' || iss.peek() == '-')
 	{
 		iss >> operation;
+		iss.ignore();
 		if (iss.peek() == 'i')
 		{
 			iss.ignore();
@@ -55,8 +56,12 @@ std::istream& operator>>(std::istream& in, TCompl& c)
 		}
 		else
 		{
-			iss.putback(operation);
+			//iss.putback(operation);
 			iss >> c.Im;
+			if (operation == '-')
+			{
+				c.Im = -c.Im;
+			}
 		}
 	}
 	else
@@ -74,22 +79,22 @@ std::ostream& operator <<(std::ostream& in, TCompl& c)
 {
 	char operation;
 
-	if (c.Im > 0 && c.Im != 1 && c.Im != -1)
+	if (c.Im > 0 && c.Im != 1 && c.Im != -1 && c.Re != 0)
 	{
 		operation = '+';
 		std::cout << c.Re << ' ' << operation << ' ' << c.Im << 'i';
 	}
-	else if (c.Im < 0 && c.Im != 1 && c.Im != -1)
+	else if (c.Im < 0 && c.Im != 1 && c.Im != -1 && c.Re != 0)
 	{
 		operation = '-';
 		std::cout << c.Re << ' ' << operation << ' ' << (c.Im * (-1)) << 'i';
 	}
-	else if (c.Im == 1)
+	else if (c.Im == 1 && c.Re != 0)
 	{
 		operation = '+';
 		std::cout << c.Re << ' ' << operation << ' ' << 'i';
 	}
-	else if (c.Im == -1)
+	else if (c.Im == -1 && c.Re != 0)
 	{
 		operation = '-';
 		std::cout << c.Re << ' ' << operation << ' ' << 'i';
@@ -98,6 +103,18 @@ std::ostream& operator <<(std::ostream& in, TCompl& c)
 	{
 		std::cout << c.Re;
 		return in;
+	}
+	else if (c.Re == 0 && c.Im != 1 && c.Im != -1)
+	{
+		std::cout << c.Im << 'i';
+	}
+	else if (c.Re == 0 && c.Im == 1)
+	{
+		std::cout << 'i';
+	}
+	else if (c.Re == 0 && c.Im == -1)
+	{
+		std::cout << "-i";
 	}
 
 	return in;
@@ -206,7 +223,7 @@ TCompl& TCompl::operator /=(const TCompl& op2)
 	return *this;
 }
 
-TCompl TCompl::operator +(const TCompl& op2) 
+TCompl TCompl::operator +(const TCompl& op2)
 {
 	TCompl res;
 	res.Re = Re + op2.Re;
