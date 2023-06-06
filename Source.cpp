@@ -1,4 +1,4 @@
-#include "TComplex.h"
+#include "TCompl.h"
 #include <string>
 #include <cmath>
 
@@ -19,100 +19,111 @@ int main()
 	{
 		interface_options();
 
-		std::cin >> operation_id;
-
-		switch (operation_id)
+		if (std::cin >> operation_id)
 		{
-			std::cin >> operation_id;
 
-		case 1:
-
-			res = a + b;
-			break;
-
-		case 2:
-
-			res = a - b;
-			break;
-
-		case 3:
-
-			res = a * b;
-			break;
-
-		case 4:
-
-			res = a / b;
-			break;
-
-		case 5:
-
-			res = a = b;
-			break;
-
-		case 6:
-
-			res = a += b;
-			break;
-
-		case 7:
-			res = a -= b;
-			break;
-
-		case 8:
-
-			res = a *= b;
-			break;
-
-		case 9:
-
-			res = a /= b;
-			break;
-
-		case 10:
-
-			res = a == b;
-			break;
-
-		case 11:
-
-			res = a != b;
-			break;
-
-		case 12:
-
-			int b_int;
-
-			if (b.GetIm() == 0 && (abs(round(b.GetRe()) - b.GetRe()) < std::numeric_limits<double>::epsilon()))
+			switch (operation_id)
 			{
-				b_int = static_cast<int>(round(b.GetRe()));
+				if (!std::cin >> operation_id)
+				{
+					std::cin.clear();
+					break;
+				}
+
+			case 1:
+
+				res = a + b;
+				break;
+
+			case 2:
+
+				res = a - b;
+				break;
+
+			case 3:
+
+				res = a * b;
+				break;
+
+			case 4:
+
+				res = a / b;
+				break;
+
+			case 5:
+
+				res = a = b;
+				break;
+
+			case 6:
+
+				res = a += b;
+				break;
+
+			case 7:
+				res = a -= b;
+				break;
+
+			case 8:
+
+				res = a *= b;
+				break;
+
+			case 9:
+
+				res = a /= b;
+				break;
+
+			case 10:
+
+				res = a == b;
+				break;
+
+			case 11:
+
+				res = a != b;
+				break;
+
+			case 12:
+
+				int b_int;
+
+				if (b.GetIm() == 0 && (abs(round(b.GetRe()) - b.GetRe()) < std::numeric_limits<double>::epsilon()))
+				{
+					b_int = static_cast<int>(round(b.GetRe()));
+				}
+				else
+				{
+					std::cout << "Input b as an int: ";
+					std::cin >> b_int;
+					b = b_int; //Changing "original" b complex number to 0 + 0i
+				}
+
+				res = a ^ b_int;
+				break;
+
+			case 13:
+				//std::cin.ignore();
+				interface_input(a, b);
+				break;
+
+			case 14:
+
+				break;
 			}
-			else
+
+			if (operation_id != 13)
 			{
-				std::cout << "Input b as an int: ";
-				std::cin >> b_int;
-				b = b_int; //Changing "original" b complex number to 0 + 0i
+				std::cout << "\n ----Operation details---- \n";
+				std::cout << "a: " << a << '\n';
+				std::cout << "b: " << b << '\n';
+				std::cout << "returned value: " << res << std::endl << std::endl;
 			}
-
-			res = a ^ b_int;
-			break;
-
-		case 13:
-			//std::cin.ignore();
-			interface_input(a, b);
-			break;
-
-		case 14:
-
-			break;
 		}
-
-		if (operation_id != 13)
+		else
 		{
-			std::cout << "\n ----Operation details---- \n";
-			std::cout << "a: " << a << '\n';
-			std::cout << "b: " << b << '\n';
-			std::cout << "returned value: " << res << std::endl << std::endl;
+			operation_id = 14;
+			std::cout << "\nInput error\n";
 		}
 
 	} while (operation_id != 14);
