@@ -38,9 +38,12 @@ public:
 	TCompl(const TCompl& op2);
 	~TCompl();
 
-	void Set(double re, double im);
-	double GetRe();
-	double GetIm();
+	//void Set(double re, double im);
+
+	int ConvertToInt();
+
+	//double GetRe() const;
+	//double GetIm() const;
 
 	friend std::istream& operator >>(std::istream& in, TCompl& c);
 	friend std::ostream& operator <<(std::ostream& in, TCompl& c);
