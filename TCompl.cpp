@@ -52,7 +52,14 @@ std::istream& operator>>(std::istream& in, TCompl& c)
 		if (iss.peek() == 'i')
 		{
 			iss.ignore();
-			c.Im = (operation == '-') ? -1 : 1;
+			if (operation == '-')
+			{
+				c.Im = -1;
+			}
+			else
+			{
+				c.Im = 1;
+			}
 		}
 		else
 		{
@@ -166,16 +173,16 @@ TCompl::~TCompl()
 	std::cout << "Destructor invoked" << std::endl;
 #endif
 }
-
-double TCompl::GetRe()
+/*
+double TCompl::GetRe() const
 {
 	return Re;
 }
 
-double TCompl::GetIm()
+double TCompl::GetIm() const
 {
 	return Im;
-}
+}*/
 
 bool TCompl::operator ==(const TCompl& op2)
 {
@@ -258,7 +265,7 @@ TCompl TCompl::operator /(const TCompl& op2)
 	{
 		if ((op2.Re * op2.Re + op2.Im * op2.Im) == 0)
 		{
-			throw std::runtime_error("Error. Division by zero. \n");
+			throw std::invalid_argument("Error. Division by zero. \n");
 		}
 		else
 		{
@@ -268,7 +275,7 @@ TCompl TCompl::operator /(const TCompl& op2)
 	}
 	catch (const std::exception& e)
 	{
-		std::cout << e.what() << std::endl;
+		//std::cout << e.what() << std::endl;
 	}
 
 	return res;
@@ -333,9 +340,23 @@ TCompl TCompl::operator ^(const int power)
 
 	return res;
 }
-
-void TCompl::Set(double re, double im)
+/*
+//void TCompl::Set(double re, double im)
 {
-	Re = re;
-	Im = im;
+	//Re = re;
+	//Im = im;
+}*/
+
+int TCompl::ConvertToInt()
+{
+	int op_int;
+
+	if (Im == 0 && (abs(round(Re) - Re) < std::numeric_limits<double>::epsilon()))
+	{
+		op_int = static_cast<int>(round(Re));
+	}
+	else
+	{
+		throw std::invalid_argument("Complex number is not convertible to int.");
+	}
 }
